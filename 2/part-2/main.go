@@ -89,14 +89,13 @@ func isValidID(inp string) bool {
 	length := len(inp)
 
 	for i := length / 2; i > 0; i-- {
+		if length%i != 0 {
+			continue
+		}
 		check := inp[:i]
-		//fmt.Printf("checking if \"%s\" is repeating in \"%s\"\n", check, inp)
 		if checkRepeating(inp, check) {
-
-			//fmt.Printf("\t\"%s\" IS repeating in \"%s\"\n", check, inp)
 			return false
 		}
-		//fmt.Printf("\t\"%s\" is NOT repeating in \"%s\"\n", check, inp)
 	}
 
 	return true
