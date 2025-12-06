@@ -9,15 +9,10 @@ import (
 )
 
 func main() {
-	fmt.Println(parseInput("input"))
-}
-
-func plus(a, b int) int {
-	return (a + b) % 100
-}
-
-func minus(a, b int) int {
-	return (((a - b) % 100) + 100) % 100
+	if len(os.Args) < 2 {
+		log.Fatal("you need to supply at least 1 argument")
+	}
+	fmt.Println(parseInput(os.Args[1]))
 }
 
 func parseInput(filename string) int {
@@ -30,31 +25,42 @@ func parseInput(filename string) int {
 	count := 0
 	pointer := 50
 	for scanner.Scan() {
-		currline := scanner.Text()
-
-		inpNum, err := strconv.Atoi(currline[1:])
+		line := scanner.Text()
+		num, err := strconv.Atoi(line[1:])
+		fmt.Printf("num %d, pointer %d\n", num, pointer)
 
 		if err != nil {
-			log.Fatal("could not convert string to number")
+			log.Fatal(err)
 		}
 
-		fmt.Print(pointer)
-		oldPointer := pointer
+		if line[0] == 'L' {
+			for i := 0; i < num; i++ {
+				pointer -= 1
+				//fmt.Printf("pointer -> %d\n", pointer)
+				if pointer == 0 {
+					count++
+				}
+				if pointer < 0 {
+					pointer += 100
+				}
+			}
+		} else {
+			for i := 0; i < num; i++ {
+				pointer += 1
+				if pointer >= 100 {
+					pointer -= 100
+				}
+				if pointer == 0 {
+					count++
+				}
+			}
+		}
 
-		if currline[0] == 'R' {
-			pointer = minus(pointer, inpNum)
-			fmt.Print(" - ", inpNum)
-			if oldPointer > pointer {
-				count++
-			}
-		}
-		if currline[0] == 'L' {
-			pointer = plus(pointer, inpNum)
-			fmt.Print(" + ", inpNum)
-			if oldPointer < pointer {
-				count++
-			}
-		}
+		fmt.Printf("pointer %d, count %d\n", pointer, count)
+
+		fmt.Println()
+
 	}
+
 	return count
 }
