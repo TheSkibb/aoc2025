@@ -27,7 +27,7 @@ func parseInp(filename string) int {
 	index := strings.Index(firstLine, "S")
 	fmt.Println("beam @ index", index)
 	beams := initBeams(index, len(firstLine))
-	printBeams(beams, firstLine)
+	printBeams(beams)
 
 	if len(beams) != len(firstLine) {
 		log.Fatal("should be the same length", len(beams), len(firstLine))
@@ -36,57 +36,49 @@ func parseInp(filename string) int {
 	accum := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		if line == "" {
-			break
-		}
-		split := false
 		for i, char := range line {
 			if char == '^' {
-				if beams[i] {
-					split = true
-					beams[i] = false
-					beams[i+1] = true
-					beams[i-1] = true
+				if beams[i] != 0 {
+					accum++
+					//todo
+					beams[i+1] += beams[i]
+					beams[i-1] += beams[i]
+					beams[i] = 0
 				}
 			}
 		}
-		if split {
-			accum += getNumberOfBeams(beams)
-		}
-		printBeams(beams, line)
+		printBeams(beams)
 	}
 
+	return getPathSum(beams)
+}
+
+func getPathSum(beams []int) int {
+	accum := 0
+	for _, i := range beams {
+		accum += i
+	}
 	return accum
 }
 
-func initBeams(initIndex, length int) []bool {
-	beams := []bool{}
+func initBeams(initIndex, length int) []int {
+	beams := []int{}
 
 	for i := 0; i < length; i++ {
-		beams = append(beams, i == initIndex)
+		init := 0
+		if i == initIndex {
+			init = 1
+		}
+		beams = append(beams, init)
 	}
 
 	return beams
 }
 
-func getNumberOfBeams(beams []bool) int {
-	accum := 0
-
+func printBeams(beams []int) {
 	for _, beam := range beams {
-		if beam {
-			accum++
-		}
-	}
-
-	return accum
-}
-
-func printBeams(beams []bool, line string) {
-	for i, beam := range beams {
-		if line[i] == '^' {
-			fmt.Printf("^")
-		} else if beam {
-			fmt.Printf("|")
+		if beam != 0 {
+			fmt.Printf("%d", beam)
 		} else {
 			fmt.Printf(".")
 		}
