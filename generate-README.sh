@@ -8,6 +8,7 @@ cat <<EOF > README.md
 done in golang, some of them on my phone lol
 (since inputs are meant to be secret, they are not included here)
 
+Automatically generated times (still a little jank)
 | task | time (seconds) | time (nanoseconds) |
 | ---- | -------------- | ------------------ |
 EOF
