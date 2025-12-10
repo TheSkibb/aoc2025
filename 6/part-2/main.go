@@ -10,9 +10,11 @@ import (
 )
 
 func main() {
-	fmt.Println("starting...")
-	//fmt.Println(parseInp("../test-inp", 3))
-	fmt.Println(parseInp("../input", 4))
+	if len(os.Args) > 1 {
+		fmt.Println(parseInp(os.Args[1], 4))
+	} else {
+		log.Fatal("you need to supply an argument")
+	}
 }
 
 type problem struct {

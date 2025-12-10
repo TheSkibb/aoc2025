@@ -1,25 +1,28 @@
 package main
 
-import(
+import (
 	"bufio"
+	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
-	"os"
-	"log"
-	"fmt"
 )
 
 type freshRange [2]int
 
-func main(){
-	fmt.Println(parseInp("../input"))
-	//fmt.Println(parseInp("../test-inp"))
+func main() {
+	if len(os.Args) > 1 {
+		fmt.Println(parseInp(os.Args[1]))
+	} else {
+		log.Fatal("you need to supply an argument")
+	}
 }
 
 func parseInp(filename string) int {
 	file, err := os.Open(filename)
 
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -39,8 +42,8 @@ func parseInp(filename string) int {
 		}
 		if scanningRanges {
 			ranges = append(ranges, getRange(line))
-		}else{
-			if checkId(ranges, line){
+		} else {
+			if checkId(ranges, line) {
 				count++
 			}
 		}
@@ -49,7 +52,7 @@ func parseInp(filename string) int {
 	return count
 }
 
-func getRange(inp string) freshRange{
+func getRange(inp string) freshRange {
 	split := strings.Split(inp, "-")
 	if len(split) < 2 {
 		log.Fatal("too few in split")
@@ -65,18 +68,17 @@ func getRange(inp string) freshRange{
 	return freshRange{firstNum, secondNum}
 }
 
-func checkId(ranges []freshRange, inp string) bool{
+func checkId(ranges []freshRange, inp string) bool {
 	checkNum, err := strconv.Atoi(inp)
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
-	for _, r := range ranges{
+	for _, r := range ranges {
 		fmt.Printf("checking %d <= %d <= %d\n", r[0], checkNum, r[1])
-		if checkNum >= r[0] && checkNum <= r[1]{
+		if checkNum >= r[0] && checkNum <= r[1] {
 			return true
 		}
 	}
 
 	return false
 }
-

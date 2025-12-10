@@ -11,8 +11,11 @@ import (
 )
 
 func main() {
-	fmt.Println("starting")
-	fmt.Println(parseInput("../input"))
+	if len(os.Args) > 1 {
+		fmt.Println(parseInput(os.Args[1]))
+	} else {
+		log.Fatal("you need to supply the filename")
+	}
 }
 
 func parseInput(filename string) int {

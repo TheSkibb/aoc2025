@@ -10,10 +10,11 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		log.Fatal("too few arguments")
+	if len(os.Args) > 1 {
+		fmt.Println(parseInp(os.Args[1]))
+	} else {
+		log.Fatal("you need to supply an argument")
 	}
-	fmt.Println(parseInp(os.Args[1]))
 }
 
 type freshRange struct {

@@ -11,8 +11,10 @@ import (
 )
 
 func main() {
-	//fmt.Println("result", parseInput("../test-inp"))
-	fmt.Println("result", parseInput("../input"))
+	if len(os.Args) < 2 {
+		log.Fatal("too few arguments")
+	}
+	fmt.Println(parseInput(os.Args[1]))
 }
 
 type problem struct {
