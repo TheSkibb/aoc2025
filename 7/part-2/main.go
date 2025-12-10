@@ -27,27 +27,24 @@ func parseInp(filename string) int {
 	index := strings.Index(firstLine, "S")
 	fmt.Println("beam @ index", index)
 	beams := initBeams(index, len(firstLine))
-	printBeams(beams)
+	//printBeams(beams)
 
 	if len(beams) != len(firstLine) {
 		log.Fatal("should be the same length", len(beams), len(firstLine))
 	}
 
-	accum := 0
 	for scanner.Scan() {
 		line := scanner.Text()
 		for i, char := range line {
 			if char == '^' {
 				if beams[i] != 0 {
-					accum++
-					//todo
 					beams[i+1] += beams[i]
 					beams[i-1] += beams[i]
 					beams[i] = 0
 				}
 			}
 		}
-		printBeams(beams)
+		//printBeams(beams)
 	}
 
 	return getPathSum(beams)

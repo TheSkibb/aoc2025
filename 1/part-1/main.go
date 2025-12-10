@@ -9,7 +9,11 @@ import (
 )
 
 func main() {
-	fmt.Println(parseInput("input"))
+	if len(os.Args) > 1 {
+		fmt.Println(parseInput(os.Args[1]))
+	} else {
+		log.Fatal("you need to supply an argument")
+	}
 }
 
 func plus(a, b int) int {
